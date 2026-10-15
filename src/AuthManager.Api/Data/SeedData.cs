@@ -1,5 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-
 namespace AuthManager.Api.Data;
 
 /// <summary>
@@ -11,24 +9,26 @@ public static class SeedData
     public const string HashLegacy1 = "AOyYE92I1JyDIIUuYnPQ0m+sZD4jJ24Tnf51CawUSg5c5eOGu2t19utyI2CgqAVlfg==";
     public const string HashLegacy2 = "AOxUJgv030oo4GZJuXJEyAeOK6G8LVxiswQI1qu9y0ORqK+V7XndRVN4PLAlQ/fQPA==";
 
+    /// <summary>
+    /// Drops and recreates the database on every startup, so each run starts from the
+    /// same legacy (v2) hashes instead of keeping whatever got migrated last time.
+    /// </summary>
     public static async Task InitializeAsync(AuthDbContext db)
     {
+        await db.Database.EnsureDeletedAsync();
         await db.Database.EnsureCreatedAsync();
 
-        await AddIfMissingAsync(db, "user1", HashLegacy1);
-        await AddIfMissingAsync(db, "user2", HashLegacy2);
+        Add(db, "user1", HashLegacy1);
+        Add(db, "user2", HashLegacy2);
         await db.SaveChangesAsync();
     }
 
-    private static async Task AddIfMissingAsync(AuthDbContext db, string userName, string hash)
+    private static void Add(AuthDbContext db, string userName, string hash)
     {
-        var normalized = userName.ToUpperInvariant();
-        if (await db.Users.AnyAsync(u => u.NormalizedUserName == normalized)) return;
-
         db.Users.Add(new AppUser
         {
             UserName = userName,
-            NormalizedUserName = normalized,
+            NormalizedUserName = userName.ToUpperInvariant(),
             PasswordHash = hash,
             SecurityStamp = Guid.NewGuid().ToString(),
             LockoutEnabled = true
