@@ -1,13 +1,17 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using ModernWeb.Middleware;
+using ModernWeb.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var jwt = builder.Configuration.GetSection("Jwt");
 var legacyLoginUrl = builder.Configuration["Legacy:LoginUrl"]!;
+var authManagerBaseUrl = builder.Configuration["AuthManager:BaseUrl"]!;
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddHttpClient<SessionClient>(c => c.BaseAddress = new Uri(authManagerBaseUrl));
 
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -47,6 +51,7 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseMiddleware<CompanyContextMiddleware>();
 
 app.MapControllerRoute(
     name: "default",
