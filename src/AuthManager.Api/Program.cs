@@ -1,11 +1,15 @@
+using System.Security.Claims;
 using System.Text;
 using AuthManager.Api.Auth;
 using AuthManager.Api.Data;
 using AuthManager.Api.Routing;
+using AuthManager.Api.Session;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,18 +35,26 @@ builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<LoginService>();
 builder.Services.AddSingleton<RouteResolver>();
 
+builder.Services.AddSingleton<IConnectionMultiplexer>(_ =>
+    ConnectionMultiplexer.Connect(builder.Configuration["Redis:ConnectionString"] ?? "localhost:6379"));
+builder.Services.AddSingleton<SessionStateStore>();
+
 var jwt = builder.Configuration.GetSection("Jwt").Get<JwtOptions>() ?? new JwtOptions();
 if (jwt.Key.Length < 32)
     throw new InvalidOperationException("Jwt:Key must be at least 32 characters (set it via the Jwt__Key environment variable).");
 
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(o => o.TokenValidationParameters = new TokenValidationParameters
+    .AddJwtBearer(o =>
     {
-        ValidIssuer = jwt.Issuer,
-        ValidAudience = jwt.Audience,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.Key)),
-        ClockSkew = TimeSpan.FromSeconds(30)
+        o.MapInboundClaims = false;
+        o.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidIssuer = jwt.Issuer,
+            ValidAudience = jwt.Audience,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.Key)),
+            ClockSkew = TimeSpan.FromSeconds(30)
+        };
     });
 builder.Services.AddAuthorization();
 
@@ -73,6 +85,17 @@ app.MapPost("/auth/login", async (LoginRequest req, LoginService login) =>
 // Tells which app (legacy or new) owns a page.
 app.MapGet("/route", (string path, RouteResolver router) => Results.Ok(router.Resolve(path)))
     .RequireAuthorization();
+
+// Session/company state, backed by Redis. Both the legacy and the modern app read this
+// same key for a user, so neither one can drift from the other.
+app.MapGet("/session", async (ClaimsPrincipal user, SessionStateStore store) =>
+{
+    var userId = user.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+    if (userId is null) return Results.Unauthorized();
+
+    var session = await store.GetAsync(userId);
+    return session is null ? Results.NotFound() : Results.Ok(session);
+}).RequireAuthorization();
 
 app.Run();
 

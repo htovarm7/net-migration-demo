@@ -1,5 +1,7 @@
+using AuthManager.Api.Companies;
 using AuthManager.Api.Data;
 using AuthManager.Api.Routing;
+using AuthManager.Api.Session;
 using Microsoft.AspNetCore.Identity;
 
 namespace AuthManager.Api.Auth;
@@ -11,12 +13,15 @@ public record LoginResult(
     DateTime ExpiresUtc,
     bool HashMigrated,
     string Destination,
-    string RedirectUrl);
+    string RedirectUrl,
+    string CompanyId,
+    string CompanyName);
 
 public class LoginService(
     UserManager<AppUser> users,
     TokenService tokens,
     RouteResolver router,
+    SessionStateStore sessionStore,
     ILogger<LoginService> logger)
 {
     /// <summary>
@@ -43,11 +48,20 @@ public class LoginService(
 
         var formatAfter = PasswordHashFormatDetector.Detect(user.PasswordHash);
         var migrated = formatBefore == PasswordHashFormat.IdentityV2 && formatAfter == PasswordHashFormat.IdentityV3;
-        if (migrated) logger.LogInformation("{User}'s hash migrated from Identity v2 to v3", user.UserName);
+        if (migrated)
+            logger.LogInformation("{User}: hash migrated (v2 -> v3)", user.UserName);
+        else if (formatAfter == PasswordHashFormat.IdentityV3)
+            logger.LogInformation("{User}: hash already on v3, no migration needed", user.UserName);
 
         var (token, expires) = tokens.Create(user, req.Guid);
         var destination = router.Resolve(req.ReturnPath ?? "/");
 
-        return new LoginResult(token, expires, migrated, destination.Destination.ToString(), destination.Url);
+        var company = CompanyDirectory.Resolve(user.UserName!);
+        var session = new SessionContext(user.Id, user.UserName!, company.CompanyId, company.CompanyName);
+        await sessionStore.SetAsync(session, expires - DateTime.UtcNow);
+
+        return new LoginResult(
+            token, expires, migrated, destination.Destination.ToString(), destination.Url,
+            company.CompanyId, company.CompanyName);
     }
 }
