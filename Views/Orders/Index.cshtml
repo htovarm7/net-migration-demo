@@ -1,0 +1,12 @@
+@{
+    ViewBag.Title = "Orders";
+}
+
+<h2>Orders</h2>
+<p>This page is still <strong>legacy</strong>: it is served by this .NET Framework 4.8 app.</p>
+<ul>
+    @foreach (var order in (System.Collections.Generic.List<string>)ViewBag.Orders)
+    {
+        <li>@order</li>
+    }
+</ul>

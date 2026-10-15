@@ -1,0 +1,32 @@
+@model LegacyWeb.Models.LoginViewModel
+@{
+    ViewBag.Title = "Login";
+}
+
+<h2>Login</h2>
+
+@using (Html.BeginForm("Login", "Account", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.ReturnPath)
+
+    @Html.ValidationSummary(true)
+
+    <label>
+        User
+        @Html.TextBoxFor(m => m.User)
+    </label>
+    @Html.ValidationMessageFor(m => m.User, null, new { @class = "error" })
+
+    <label>
+        Password
+        @Html.PasswordFor(m => m.Password)
+    </label>
+    @Html.ValidationMessageFor(m => m.Password, null, new { @class = "error" })
+
+    <button type="submit">Sign in</button>
+}
+
+<p style="margin-top:24px;font-size:13px;color:#666">
+    Test users: <code>user1</code> / <code>12345678</code>, <code>user2</code> / <code>AbcD$1234</code>
+</p>
