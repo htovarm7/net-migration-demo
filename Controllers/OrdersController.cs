@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using System.Web.Mvc;
+using LegacyWeb.Services;
 
 namespace LegacyWeb.Controllers
 {
@@ -7,7 +7,9 @@ namespace LegacyWeb.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Orders = new List<string> { "Order #1001 - Pending", "Order #1002 - Shipped", "Order #1003 - Delivered" };
+            var session = HttpContext.Items["Session"] as SessionResult;
+            ViewBag.Session = session;
+            ViewBag.Orders = MockOrders.For(session?.CompanyId);
             return View();
         }
     }

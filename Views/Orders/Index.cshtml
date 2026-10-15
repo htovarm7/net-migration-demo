@@ -1,12 +1,25 @@
+@using LegacyWeb.Services
 @{
     ViewBag.Title = "Orders";
+    var session = ViewBag.Session as SessionResult;
 }
 
 <h2>Orders</h2>
 <p>This page is still <strong>legacy</strong>: it is served by this .NET Framework 4.8 app.</p>
-<ul>
-    @foreach (var order in (System.Collections.Generic.List<string>)ViewBag.Orders)
+
+@if (session != null)
+{
+    <p>Company: <strong>@session.CompanyName</strong> (@session.CompanyId) &mdash; read from Redis through Auth Manager's <code>/session</code>.</p>
+}
+
+<table border="1" cellpadding="6" cellspacing="0">
+    <tr><th>Order #</th><th>Status</th><th>Total</th></tr>
+    @foreach (var order in (System.Collections.Generic.List<Order>)ViewBag.Orders)
     {
-        <li>@order</li>
+        <tr>
+            <td>@order.Number</td>
+            <td>@order.Status</td>
+            <td>$@order.Total.ToString("N2")</td>
+        </tr>
     }
-</ul>
+</table>

@@ -22,6 +22,14 @@ namespace LegacyWeb.Services
         public string Url { get; set; }
     }
 
+    public class SessionResult
+    {
+        public string UserId { get; set; }
+        public string UserName { get; set; }
+        public string CompanyId { get; set; }
+        public string CompanyName { get; set; }
+    }
+
     public class AuthManagerClient
     {
         private static string BaseUrl =>
@@ -60,6 +68,25 @@ namespace LegacyWeb.Services
                         Destination = (string)obj["destination"],
                         Url = (string)obj["url"]
                     };
+                }
+                catch (WebException)
+                {
+                    return null;
+                }
+            }
+        }
+
+        // Session/company state, backed by Redis on Auth Manager's side. Both this app and the
+        // modern one read the same key for a user through this endpoint, so they never disagree.
+        public SessionResult Session(string token)
+        {
+            using (var client = new WebClient { Encoding = Encoding.UTF8 })
+            {
+                client.Headers[HttpRequestHeader.Authorization] = "Bearer " + token;
+                try
+                {
+                    var json = client.DownloadString(BaseUrl + "/session");
+                    return JsonConvert.DeserializeObject<SessionResult>(json);
                 }
                 catch (WebException)
                 {

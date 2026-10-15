@@ -31,7 +31,14 @@ namespace LegacyWeb.Filters
             }
 
             if (route.Destination == "Modern")
+            {
                 filterContext.Result = new RedirectResult(route.Url);
+                return;
+            }
+
+            // Page stays in this app: load the Redis-backed session/company context so
+            // controllers and views can use it, same data the modern app would see.
+            filterContext.HttpContext.Items["Session"] = new AuthManagerClient().Session(cookie.Value);
         }
 
         public void OnActionExecuted(ActionExecutedContext filterContext)
