@@ -35,6 +35,7 @@ namespace LegacyWeb.Controllers
             Response.Cookies.Add(new HttpCookie(AuthRoutingFilter.TokenCookie, result.Token)
             {
                 HttpOnly = true,
+                Domain = AuthRoutingFilter.CookieDomain,
                 Expires = result.ExpiresUtc
             });
 
@@ -45,6 +46,7 @@ namespace LegacyWeb.Controllers
         {
             Response.Cookies.Add(new HttpCookie(AuthRoutingFilter.TokenCookie)
             {
+                Domain = AuthRoutingFilter.CookieDomain,
                 Expires = System.DateTime.UtcNow.AddDays(-1)
             });
             return RedirectToAction("Login");

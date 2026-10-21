@@ -7,6 +7,7 @@ namespace LegacyWeb.Filters
     public class AuthRoutingFilter : IActionFilter
     {
         public const string TokenCookie = "am_token";
+        public const string CookieDomain = ".miicel.local";
 
         public void OnActionExecuting(ActionExecutingContext filterContext)
         {
@@ -25,7 +26,7 @@ namespace LegacyWeb.Filters
             var route = new AuthManagerClient().Route(path, cookie.Value);
             if (route == null)
             {
-                filterContext.HttpContext.Response.Cookies.Add(new HttpCookie(TokenCookie) { Expires = System.DateTime.UtcNow.AddDays(-1) });
+                filterContext.HttpContext.Response.Cookies.Add(new HttpCookie(TokenCookie) { Domain = CookieDomain, Expires = System.DateTime.UtcNow.AddDays(-1) });
                 filterContext.Result = LoginRedirect(filterContext, path);
                 return;
             }
