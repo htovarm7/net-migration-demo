@@ -33,7 +33,7 @@ namespace LegacyWeb.Filters
 
             if (route.Destination == "Modern")
             {
-                filterContext.Result = new RedirectResult(route.Url);
+                filterContext.Result = CrossAppRedirect(filterContext, route.Url);
                 return;
             }
 
@@ -51,6 +51,30 @@ namespace LegacyWeb.Filters
             var url = new UrlHelper(filterContext.RequestContext)
                 .Action("Login", "Account", new { returnPath });
             return new RedirectResult(url);
+        }
+
+        // A 302 on a POST/PUT gets re-sent as a GET with no body by every browser - any form
+        // data or uploaded file would silently vanish. 307 is the one status code the HTTP
+        // spec guarantees preserves both the method and the body across the redirect.
+        private static ActionResult CrossAppRedirect(ActionExecutingContext filterContext, string url)
+        {
+            var method = filterContext.HttpContext.Request.HttpMethod;
+            if (method == "GET" || method == "HEAD")
+                return new RedirectResult(url);
+
+            return new TemporaryRedirect307Result(url);
+        }
+
+        private class TemporaryRedirect307Result : ActionResult
+        {
+            private readonly string _url;
+            public TemporaryRedirect307Result(string url) { _url = url; }
+
+            public override void ExecuteResult(ControllerContext context)
+            {
+                context.HttpContext.Response.StatusCode = 307;
+                context.HttpContext.Response.AddHeader("Location", _url);
+            }
         }
     }
 }

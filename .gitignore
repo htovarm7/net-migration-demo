@@ -5,3 +5,4 @@ Backup/
 .vs/
 *.user
 UpgradeLog*.htm
+App_Data/Uploads/
