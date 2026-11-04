@@ -1,0 +1,16 @@
+services:
+  traefik:
+    image: traefik:v3.1
+    container_name: miicel-traefik
+    command:
+      - --providers.file.directory=/etc/traefik/dynamic
+      - --providers.file.watch=true
+      - --entrypoints.web.address=:80
+      - --api.insecure=true
+    ports:
+      - "80:80"
+      - "8080:8080" # Traefik dashboard: http://localhost:8080
+    volumes:
+      - ./dynamic.yml:/etc/traefik/dynamic/dynamic.yml:ro
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

@@ -1,0 +1,22 @@
+http:
+  routers:
+    gateway:
+      rule: "Host(`miicel.local`)"
+      service: gateway
+      entryPoints: [web]
+    auth:
+      rule: "Host(`auth.miicel.local`)"
+      service: auth
+      entryPoints: [web]
+
+  services:
+    # The gateway decides, per request, whether legacy or modern answers - Traefik no
+    # longer needs to know about either one directly.
+    gateway:
+      loadBalancer:
+        servers:
+          - url: "http://host.docker.internal:5003"
+    auth:
+      loadBalancer:
+        servers:
+          - url: "http://host.docker.internal:5000"
