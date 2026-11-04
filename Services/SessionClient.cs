@@ -3,7 +3,14 @@ using System.Text.Json;
 
 namespace ModernWeb.Services;
 
-public record SessionContext(string UserId, string UserName, string CompanyId, string CompanyName);
+public record SessionContext(
+    string UserId,
+    string UserName,
+    string CompanyId,
+    string CompanyName,
+    string FirstName,
+    string LastName,
+    string Role);
 
 /// <summary>
 /// Reads session/company state from Auth Manager's /session endpoint, which is itself
