@@ -1,0 +1,7 @@
+# Safety net at the repo root - each project also keeps its own .gitignore.
+.vs/
+.idea/
+.vscode/
+Thumbs.db
+.DS_Store
+*.user
