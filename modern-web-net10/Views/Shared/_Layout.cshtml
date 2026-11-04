@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Modern (.NET 10)</title>
+    <style>
+        body { font-family: Segoe UI, Arial, sans-serif; margin: 0; background: #eef6f1; color: #222; }
+        header { background: #1f5c3a; color: #fff; padding: 12px 24px; display: flex; gap: 20px; align-items: center; }
+        header a { color: #fff; text-decoration: none; }
+        header .tag { margin-left: auto; font-size: 12px; opacity: .8; }
+        main { max-width: 720px; margin: 32px auto; background: #fff; padding: 24px; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <header>
+        <strong>Demo</strong>
+        <a href="@Url.Action("Index", "Home")">Home</a>
+        <a href="@Url.Action("Index", "Profile")">Profile</a>
+        <a href="@Url.Action("Index", "Uploads")">Uploads</a>
+        <a href="@Url.Action("Index", "Contact")">Contact</a>
+        <a href="@Url.Action("Index", "SharedFiles")">Shared Files</a>
+        <a href="@Url.Action("Index", "SharedForms")">Shared Forms</a>
+        <a href="http://miicel.local/Orders">Orders</a>
+        <a href="http://miicel.local/Account/Logout">Logout</a>
+        <span class="tag">Served by .NET 10</span>
+    </header>
+    <main>
+        @RenderBody()
+    </main>
+</body>
+</html>

@@ -1,0 +1,27 @@
+@using ModernWeb.Services
+@{
+    ViewData["Title"] = "Shared Files";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var files = (List<SharedUploadRecord>)ViewBag.Files;
+}
+
+<h2>Shared Files (global endpoint)</h2>
+<p>This page talks to Auth Manager's <code>/uploads</code> &mdash; the same endpoint the legacy app's own Shared Files page uses. Upload here, then check the other app: it's the same list.</p>
+
+<form method="post" enctype="multipart/form-data">
+    <input type="file" name="file" />
+    <button type="submit">Upload</button>
+</form>
+
+<table border="1" cellpadding="6" cellspacing="0">
+    <tr><th>File</th><th>Uploaded by</th><th>From</th><th>Size</th></tr>
+    @foreach (var f in files)
+    {
+        <tr>
+            <td>@f.FileName</td>
+            <td>@f.UploadedBy</td>
+            <td>@f.SourceApp</td>
+            <td>@f.SizeBytes bytes</td>
+        </tr>
+    }
+</table>

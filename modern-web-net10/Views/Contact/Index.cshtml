@@ -1,0 +1,17 @@
+@using ModernWeb.Models
+@model ContactForm
+@{
+    ViewData["Title"] = "Contact";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Contact (modern form)</h2>
+<p>Posts to this same app. Shows the raw form dictionary, the bound object, and the uploaded file - all read directly in the controller.</p>
+
+<form method="post" enctype="multipart/form-data">
+    <label>First name <input name="FirstName" /></label>
+    <label>Last name <input name="LastName" /></label>
+    <label>Email <input name="Email" /></label>
+    <label>File <input type="file" name="file" /></label>
+    <button type="submit">Send</button>
+</form>

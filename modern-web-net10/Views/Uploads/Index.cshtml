@@ -1,0 +1,27 @@
+@using ModernWeb.Services
+@{
+    ViewData["Title"] = "Uploads";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var company = ViewBag.Company as SessionContext;
+}
+
+<h2>Uploads (modern storage)</h2>
+<p>Files posted here are saved under this app's own <code>UploadedFiles</code> folder. The legacy app never sees them.</p>
+
+@if (company != null)
+{
+    <p>Company: <strong>@company.CompanyName</strong></p>
+}
+
+<form method="post" enctype="multipart/form-data">
+    <input type="file" name="file" />
+    <button type="submit">Upload</button>
+</form>
+
+<h3>Files in this app's storage</h3>
+<ul>
+    @foreach (var name in (List<string>)ViewBag.Files)
+    {
+        <li>@name</li>
+    }
+</ul>

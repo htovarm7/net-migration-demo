@@ -1,0 +1,18 @@
+@using ModernWeb.Services
+@{
+    ViewData["Title"] = "Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var company = ViewBag.Company as SessionContext;
+}
+
+<h2>Profile</h2>
+<p>This page was <strong>migrated</strong> and is served by the new .NET 10 app.</p>
+<p>User: <strong>@User.Identity?.Name</strong></p>
+
+@if (company != null)
+{
+    <p>Full name: <strong>@company.FirstName @company.LastName</strong></p>
+    <p>Role: <strong>@company.Role</strong></p>
+    <p>Company: <strong>@company.CompanyName</strong></p>
+    <p>Company ID: <strong>@company.CompanyId</strong></p>
+}
