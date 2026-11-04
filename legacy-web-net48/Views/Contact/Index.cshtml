@@ -1,0 +1,17 @@
+@model LegacyWeb.Models.ContactForm
+@{
+    ViewBag.Title = "Contact";
+}
+
+<h2>Contact (legacy form)</h2>
+<p>Posts to this same app. Shows the raw form dictionary, the bound object, and the uploaded file - all read directly in the controller.</p>
+
+@using (Html.BeginForm("Index", "Contact", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <label>First name @Html.TextBoxFor(m => m.FirstName)</label>
+    <label>Last name @Html.TextBoxFor(m => m.LastName)</label>
+    <label>Email @Html.TextBoxFor(m => m.Email)</label>
+    <label>File <input type="file" name="file" /></label>
+    <button type="submit">Send</button>
+}

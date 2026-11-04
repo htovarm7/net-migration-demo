@@ -1,0 +1,32 @@
+@using System.Collections.Generic
+@using LegacyWeb.Services
+@{
+    ViewBag.Title = "Shared Files";
+    var files = ViewBag.Files as List<SharedUploadResult>;
+}
+
+<h2>Shared Files (global endpoint)</h2>
+<p>This page talks to Auth Manager's <code>/uploads</code> &mdash; the same endpoint the modern app's own Shared Files page uses. Upload here, then check the other app: it's the same list.</p>
+
+@using (Html.BeginForm("Index", "SharedFiles", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <input type="file" name="file" />
+    <button type="submit">Upload</button>
+}
+
+<table border="1" cellpadding="6" cellspacing="0">
+    <tr><th>File</th><th>Uploaded by</th><th>From</th><th>Size</th></tr>
+    @if (files != null)
+    {
+        foreach (var f in files)
+        {
+            <tr>
+                <td>@f.FileName</td>
+                <td>@f.UploadedBy</td>
+                <td>@f.SourceApp</td>
+                <td>@f.SizeBytes bytes</td>
+            </tr>
+        }
+    }
+</table>

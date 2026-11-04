@@ -1,0 +1,9 @@
+bin/
+obj/
+packages/
+Backup/
+.vs/
+*.user
+UpgradeLog*.htm
+App_Data/Uploads/
+App_Data/Contacts/

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title - Legacy (.NET Framework 4.8)</title>
+    <style>
+        body { font-family: Segoe UI, Arial, sans-serif; margin: 0; background: #f4f5f7; color: #222; }
+        header { background: #3b3b5c; color: #fff; padding: 12px 24px; display: flex; gap: 20px; align-items: center; }
+        header a { color: #fff; text-decoration: none; }
+        header .tag { margin-left: auto; font-size: 12px; opacity: .8; }
+        main { max-width: 720px; margin: 32px auto; background: #fff; padding: 24px; border-radius: 8px; }
+        label { display: block; margin-top: 12px; }
+        input { width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box; }
+        button { margin-top: 16px; padding: 8px 16px; }
+        .error { color: #b00020; margin-top: 8px; }
+        .validation-summary-errors { color: #b00020; }
+    </style>
+</head>
+<body>
+    <header>
+        <strong>Demo</strong>
+        <a href="@Url.Action("Index", "Orders")">Orders</a>
+        <a href="@Url.Action("Index", "Uploads")">Uploads</a>
+        <a href="@Url.Action("Index", "Contact")">Contact</a>
+        <a href="@Url.Action("Index", "SharedFiles")">Shared Files</a>
+        <a href="@Url.Action("Index", "SharedForms")">Shared Forms</a>
+        <a href="@Url.Action("Index", "Home")">Home</a>
+        <a href="@Url.Action("Index", "Profile")">Profile</a>
+        <a href="@Url.Action("Logout", "Account")">Logout</a>
+        <span class="tag">Served by .NET Framework 4.8</span>
+    </header>
+    <main>
+        @RenderBody()
+    </main>
+</body>
+</html>
