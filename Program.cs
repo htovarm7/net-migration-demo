@@ -12,6 +12,8 @@ var authManagerBaseUrl = builder.Configuration["AuthManager:BaseUrl"]!;
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient<SessionClient>(c => c.BaseAddress = new Uri(authManagerBaseUrl));
+builder.Services.AddHttpClient<SharedFilesClient>(c => c.BaseAddress = new Uri(authManagerBaseUrl));
+builder.Services.AddHttpClient<SharedFormsClient>(c => c.BaseAddress = new Uri(authManagerBaseUrl));
 
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -28,7 +30,8 @@ builder.Services
         };
         o.Events = new JwtBearerEvents
         {
-            // The token lives in the same cookie the legacy app sets (cookies are shared across localhost ports).
+            // The token lives in the same cookie the legacy app sets - the gateway in front
+            // of both apps forwards under one host (miicel.local) with no visible prefix.
             OnMessageReceived = ctx =>
             {
                 ctx.Token = ctx.Request.Cookies["am_token"];
