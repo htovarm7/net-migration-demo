@@ -57,7 +57,10 @@ public class LoginService(
         var destination = router.Resolve(req.ReturnPath ?? "/");
 
         var company = CompanyDirectory.Resolve(user.UserName!);
-        var session = new SessionContext(user.Id, user.UserName!, company.CompanyId, company.CompanyName);
+        var profile = UserDirectory.Resolve(user.UserName!);
+        var session = new SessionContext(
+            user.Id, user.UserName!, company.CompanyId, company.CompanyName,
+            profile.FirstName, profile.LastName, profile.Role);
         await sessionStore.SetAsync(session, expires - DateTime.UtcNow);
 
         return new LoginResult(
