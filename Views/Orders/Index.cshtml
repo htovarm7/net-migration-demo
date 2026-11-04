@@ -9,6 +9,7 @@
 
 @if (session != null)
 {
+    <p>User: <strong>@session.FirstName @session.LastName</strong> (@session.Role)</p>
     <p>Company: <strong>@session.CompanyName</strong> (@session.CompanyId) &mdash; read from Redis through Auth Manager's <code>/session</code>.</p>
 }
 

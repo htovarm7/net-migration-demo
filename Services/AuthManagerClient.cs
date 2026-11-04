@@ -55,6 +55,9 @@ namespace LegacyWeb.Services
         public string UserName { get; set; }
         public string CompanyId { get; set; }
         public string CompanyName { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Role { get; set; }
     }
 
     public class AuthManagerClient
