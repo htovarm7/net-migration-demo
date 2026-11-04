@@ -7,7 +7,7 @@ namespace LegacyWeb.Filters
     public class AuthRoutingFilter : IActionFilter
     {
         public const string TokenCookie = "am_token";
-        public const string CookieDomain = ".miicel.local";
+        public const string CookieDomain = "miicel.local";
 
         public void OnActionExecuting(ActionExecutingContext filterContext)
         {
