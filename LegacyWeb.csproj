@@ -71,6 +71,8 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
+    <Compile Include="Controllers\SharedFilesController.cs" />
+    <Compile Include="Controllers\SharedFormsController.cs" />
     <Compile Include="Controllers\UploadsController.cs" />
     <Compile Include="Filters\AuthRoutingFilter.cs" />
     <Compile Include="Global.asax.cs">
@@ -92,6 +94,8 @@
     <Content Include="Views\Uploads\Index.cshtml" />
     <Content Include="Views\Contact\Index.cshtml" />
     <Content Include="Views\Contact\Result.cshtml" />
+    <Content Include="Views\SharedFiles\Index.cshtml" />
+    <Content Include="Views\SharedForms\Index.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />  <ProjectExtensions>
     <VisualStudio>

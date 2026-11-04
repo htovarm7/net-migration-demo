@@ -1,0 +1,38 @@
+@using System.Collections.Generic
+@using LegacyWeb.Services
+@{
+    ViewBag.Title = "Shared Forms";
+    var submissions = ViewBag.Submissions as List<FormSubmissionResult>;
+}
+
+<h2>Shared Forms (global endpoint, with history)</h2>
+<p>Posts to Auth Manager's <code>/forms</code> &mdash; the same endpoint the modern app's own Shared Forms page uses. The history below is identical from either app, and from the terminal: <code>curl -H "Authorization: Bearer &lt;token&gt;" http://localhost:5000/forms</code>.</p>
+
+@using (Html.BeginForm("Index", "SharedForms", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <label>First name <input type="text" name="firstName" /></label>
+    <label>Last name <input type="text" name="lastName" /></label>
+    <label>Email <input type="text" name="email" /></label>
+    <label>File (optional) <input type="file" name="file" /></label>
+    <button type="submit">Submit</button>
+}
+
+<h3>History (anyone's submissions, from either app)</h3>
+<table border="1" cellpadding="6" cellspacing="0">
+    <tr><th>When (UTC)</th><th>Name</th><th>Email</th><th>By</th><th>From</th><th>File</th></tr>
+    @if (submissions != null)
+    {
+        foreach (var s in submissions)
+        {
+            <tr>
+                <td>@s.SubmittedAtUtc.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                <td>@s.FirstName @s.LastName</td>
+                <td>@s.Email</td>
+                <td>@s.SubmittedBy</td>
+                <td>@s.SourceApp</td>
+                <td>@(s.FileName ?? "-")</td>
+            </tr>
+        }
+    }
+</table>
