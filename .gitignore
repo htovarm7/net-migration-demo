@@ -4,3 +4,4 @@ obj/
 *.db-*
 .vs/
 .idea/
+src/AuthManager.Api/App_Data/
