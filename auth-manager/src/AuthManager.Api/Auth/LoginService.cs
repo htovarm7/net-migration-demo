@@ -24,11 +24,6 @@ public class LoginService(
     SessionStateStore sessionStore,
     ILogger<LoginService> logger)
 {
-    /// <summary>
-    /// Validates credentials. If the hash was in .NET Framework format (v2) and the password is correct,
-    /// Identity regenerates it as v3 (UserManager.CheckPasswordAsync rehashes automatically).
-    /// Returns null when the credentials are invalid or the account is locked out.
-    /// </summary>
     public async Task<LoginResult?> LoginAsync(LoginRequest req)
     {
         var user = await users.FindByNameAsync(req.User);

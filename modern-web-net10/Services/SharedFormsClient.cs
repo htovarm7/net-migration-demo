@@ -8,10 +8,6 @@ public record FormSubmissionRecord(
     string SubmittedBy, string SourceApp, DateTime SubmittedAtUtc,
     string? FileName, long? FileSizeBytes);
 
-/// <summary>
-/// Calls Auth Manager's global /forms endpoint - the same contract and same history
-/// the legacy app's AuthManagerClient.SubmitSharedForm/ListSharedForms use.
-/// </summary>
 public class SharedFormsClient(HttpClient http)
 {
     private static readonly JsonSerializerOptions JsonOptions = new() { PropertyNameCaseInsensitive = true };

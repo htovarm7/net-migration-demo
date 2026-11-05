@@ -1,9 +1,5 @@
 namespace ModernWeb.Services;
 
-/// <summary>
-/// Fake sales data, seeded from the company id so the same company always sees the
-/// same numbers instead of a hardcoded static page.
-/// </summary>
 public static class MockSales
 {
     public record MonthlySummary(decimal Total, int Orders);

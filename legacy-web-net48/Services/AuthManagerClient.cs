@@ -106,8 +106,6 @@ namespace LegacyWeb.Services
             }
         }
 
-        // Session/company state, backed by Redis on Auth Manager's side. Both this app and the
-        // modern one read the same key for a user through this endpoint, so they never disagree.
         public SessionResult Session(string token)
         {
             using (var client = new WebClient { Encoding = Encoding.UTF8 })
@@ -125,9 +123,6 @@ namespace LegacyWeb.Services
             }
         }
 
-        // The global /uploads endpoint on Auth Manager - owned by neither app. The browser
-        // posts the file to this controller (same origin), which then forwards it
-        // server-to-server with the user's token, same contract the modern app uses.
         public SharedUploadResult UploadShared(string token, HttpPostedFileBase file)
         {
             using (var client = new HttpClient())
@@ -167,8 +162,6 @@ namespace LegacyWeb.Services
             }
         }
 
-        // The global /forms endpoint - structured fields plus an optional file, same
-        // contract and same history whether it was posted from here or from the modern app.
         public FormSubmissionResult SubmitSharedForm(
             string token, string firstName, string lastName, string email, HttpPostedFileBase file)
         {

@@ -24,7 +24,6 @@ builder.Services.Configure<RoutingOptions>(builder.Configuration.GetSection("Rou
 builder.Services.AddDbContext<AuthDbContext>(o =>
     o.UseSqlite(builder.Configuration.GetConnectionString("Default")));
 
-// Identity Core's PasswordHasher<T> verifies v2 hashes (.NET Framework) and returns SuccessRehashNeeded.
 builder.Services
     .AddIdentityCore<AppUser>(o =>
     {
@@ -86,12 +85,9 @@ app.MapPost("/auth/login", async (LoginRequest req, LoginService login) =>
         : Results.Ok(result);
 });
 
-// Tells which app (legacy or new) owns a page.
 app.MapGet("/route", (string path, RouteResolver router) => Results.Ok(router.Resolve(path)))
     .RequireAuthorization();
 
-// Session/company state, backed by Redis. Both the legacy and the modern app read this
-// same key for a user, so neither one can drift from the other.
 app.MapGet("/session", async (ClaimsPrincipal user, SessionStateStore store) =>
 {
     var userId = user.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
@@ -101,8 +97,6 @@ app.MapGet("/session", async (ClaimsPrincipal user, SessionStateStore store) =>
     return session is null ? Results.NotFound() : Results.Ok(session);
 }).RequireAuthorization();
 
-// A genuinely global endpoint: owned by neither legacy nor modern. Both call the exact
-// same contract and see the exact same files, whichever one made the request.
 app.MapPost("/uploads", async (HttpRequest req, SharedUploadStore uploads, ClaimsPrincipal user) =>
 {
     var file = req.Form.Files["file"];
@@ -119,8 +113,6 @@ app.MapPost("/uploads", async (HttpRequest req, SharedUploadStore uploads, Claim
 app.MapGet("/uploads", (SharedUploadStore uploads) => Results.Ok(uploads.List()))
     .RequireAuthorization();
 
-// Same idea as /uploads, but for structured data plus history: both apps post the exact
-// same fields and can read everyone's past submissions back, from a browser or a terminal.
 app.MapPost("/forms", async (HttpRequest req, SharedFormStore forms, ClaimsPrincipal user) =>
 {
     var firstName = req.Form["firstName"].FirstOrDefault() ?? "";

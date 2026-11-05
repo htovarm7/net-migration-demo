@@ -5,8 +5,7 @@
     var submissions = (List<FormSubmissionRecord>)ViewBag.Submissions;
 }
 
-<h2>Shared Forms (global endpoint, with history)</h2>
-<p>Posts to Auth Manager's <code>/forms</code> &mdash; the same endpoint the legacy app's own Shared Forms page uses. The history below is identical from either app, and from the terminal: <code>curl -H "Authorization: Bearer &lt;token&gt;" http://localhost:5000/forms</code>.</p>
+<h2>Shared Forms</h2>
 
 <form method="post" enctype="multipart/form-data">
     <input type="text" name="firstName" placeholder="First name" />
@@ -16,7 +15,7 @@
     <button type="submit">Submit</button>
 </form>
 
-<h3>History (anyone's submissions, from either app)</h3>
+<h3>History</h3>
 <table border="1" cellpadding="6" cellspacing="0">
     <tr><th>When (UTC)</th><th>Name</th><th>Email</th><th>By</th><th>From</th><th>File</th></tr>
     @foreach (var s in submissions)

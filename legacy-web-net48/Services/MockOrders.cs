@@ -10,10 +10,6 @@ namespace LegacyWeb.Services
         public decimal Total { get; set; }
     }
 
-    /// <summary>
-    /// Fake order data, seeded from the company id so the same company always sees the
-    /// same orders instead of a hardcoded static list.
-    /// </summary>
     public static class MockOrders
     {
         private static readonly string[] Statuses = { "Pending", "Shipped", "Delivered" };

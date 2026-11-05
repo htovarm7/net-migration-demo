@@ -4,11 +4,6 @@ namespace AuthManager.Api.Routing;
 
 public record ResolvedRoute(Destination Destination, string Url);
 
-/// <summary>
-/// Decides whether a page is served by the legacy app (.NET Framework) or the new one (.NET 10).
-/// Pages migrate one by one: just move the entry in the Routing:Pages configuration.
-/// The longest matching prefix wins; with no match, DefaultDestination applies.
-/// </summary>
 public class RouteResolver(IOptions<RoutingOptions> options)
 {
     private readonly RoutingOptions _opts = options.Value;

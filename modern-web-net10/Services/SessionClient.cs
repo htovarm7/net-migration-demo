@@ -12,10 +12,6 @@ public record SessionContext(
     string LastName,
     string Role);
 
-/// <summary>
-/// Reads session/company state from Auth Manager's /session endpoint, which is itself
-/// backed by Redis. The legacy app reads the exact same key, so both apps always agree.
-/// </summary>
 public class SessionClient(HttpClient http)
 {
     public async Task<SessionContext?> GetAsync(string token)

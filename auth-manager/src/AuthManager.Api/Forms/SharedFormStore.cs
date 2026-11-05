@@ -13,11 +13,6 @@ public record FormSubmission(
     string? FileName,
     long? FileSizeBytes);
 
-/// <summary>
-/// A global endpoint for structured data, not just files: same /forms contract for
-/// legacy and modern, same stored history either one can read back - "informacion del
-/// pasado" visible from both, and from the terminal via GET /forms.
-/// </summary>
 public class SharedFormStore(IWebHostEnvironment env)
 {
     private string RootPath => Path.Combine(env.ContentRootPath, "App_Data", "SharedForms");

@@ -37,8 +37,6 @@ namespace LegacyWeb.Filters
                 return;
             }
 
-            // Page stays in this app: load the Redis-backed session/company context so
-            // controllers and views can use it, same data the modern app would see.
             filterContext.HttpContext.Items["Session"] = new AuthManagerClient().Session(cookie.Value);
         }
 

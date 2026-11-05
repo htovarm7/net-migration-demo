@@ -7,9 +7,6 @@ using LegacyWeb.Services;
 
 namespace LegacyWeb.Controllers
 {
-    // Not a migrated page: this feature lives entirely in the legacy app, so it is never
-    // routed through AuthRoutingFilter's Legacy/Modern table. Files saved here only ever
-    // touch this app's own folder - the modern app can't see or write into it.
     public class UploadsController : Controller
     {
         private string UploadsPath => Server.MapPath("~/App_Data/Uploads");

@@ -5,9 +5,9 @@
     var data = (LegacyWeb.Models.ContactForm)ViewBag.BoundModel;
 }
 
-<h2>Received on legacy (.NET Framework 4.8)</h2>
+<h2>Received</h2>
 
-<h3>1) Raw form dictionary (Request.Form)</h3>
+<h3>Form data</h3>
 <table border="1" cellpadding="6" cellspacing="0">
     @foreach (string key in form.AllKeys)
     {
@@ -15,21 +15,21 @@
     }
 </table>
 
-<h3>2) Bound object (ContactForm)</h3>
+<h3>Parsed</h3>
 <ul>
     <li>FirstName: <strong>@data.FirstName</strong></li>
     <li>LastName: <strong>@data.LastName</strong></li>
     <li>Email: <strong>@data.Email</strong></li>
 </ul>
 
-<h3>3) Uploaded file (read from the multipart part in the controller)</h3>
+<h3>File</h3>
 @if (ViewBag.FileName != null)
 {
     <ul>
         <li>FileName: <strong>@ViewBag.FileName</strong></li>
         <li>ContentType: <strong>@ViewBag.FileContentType</strong></li>
         <li>Size: <strong>@ViewBag.FileLength bytes</strong></li>
-        <li>Saved as: <strong>@ViewBag.SavedAs</strong> (in this app's own <code>App_Data\Contacts</code>)</li>
+        <li>Saved as: <strong>@ViewBag.SavedAs</strong></li>
     </ul>
 }
 else

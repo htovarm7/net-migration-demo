@@ -5,8 +5,7 @@
     var files = ViewBag.Files as List<SharedUploadResult>;
 }
 
-<h2>Shared Files (global endpoint)</h2>
-<p>This page talks to Auth Manager's <code>/uploads</code> &mdash; the same endpoint the modern app's own Shared Files page uses. Upload here, then check the other app: it's the same list.</p>
+<h2>Shared Files</h2>
 
 @using (Html.BeginForm("Index", "SharedFiles", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {

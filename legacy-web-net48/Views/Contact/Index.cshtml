@@ -3,8 +3,7 @@
     ViewBag.Title = "Contact";
 }
 
-<h2>Contact (legacy form)</h2>
-<p>Posts to this same app. Shows the raw form dictionary, the bound object, and the uploaded file - all read directly in the controller.</p>
+<h2>Contact</h2>
 
 @using (Html.BeginForm("Index", "Contact", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {

@@ -20,8 +20,6 @@ var httpClient = new HttpMessageInvoker(new SocketsHttpHandler
     UseCookies = false
 });
 
-// Same request, every time: decide once, server-side, which app answers it - the
-// browser's address bar never changes and never reveals which one responded.
 app.Map("/{**catchAll}", async (HttpContext context, IHttpForwarder forwarder, IHttpClientFactory httpClientFactory) =>
 {
     var path = context.Request.Path.Value ?? "/";
@@ -43,11 +41,9 @@ app.Run();
 
 async Task<string> ResolveDestinationAsync(string path, string? token, IHttpClientFactory httpClientFactory)
 {
-    // Login/logout only ever live on the legacy app - never ask Auth Manager about them.
     if (path.StartsWith("/Account", StringComparison.OrdinalIgnoreCase))
         return legacyUpstream;
 
-    // No session yet: send to legacy, whose own filter will bounce to /Account/Login.
     if (string.IsNullOrEmpty(token))
         return legacyUpstream;
 
@@ -65,15 +61,12 @@ async Task<string> ResolveDestinationAsync(string path, string? token, IHttpClie
     }
     catch
     {
-        // Auth Manager unreachable: fail toward legacy rather than dropping the request.
         return legacyUpstream;
     }
 }
 
 record RouteResponse(string Destination, string Url);
 
-// IIS Express only accepts requests whose Host header is exactly "localhost" - this
-// overrides it on the way out, same trick Traefik used before the gateway existed.
 class HostOverrideTransformer : HttpTransformer
 {
     public static readonly HostOverrideTransformer ToLocalhost = new();

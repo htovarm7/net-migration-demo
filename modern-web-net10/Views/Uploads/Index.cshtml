@@ -5,8 +5,7 @@
     var company = ViewBag.Company as SessionContext;
 }
 
-<h2>Uploads (modern storage)</h2>
-<p>Files posted here are saved under this app's own <code>UploadedFiles</code> folder. The legacy app never sees them.</p>
+<h2>Uploads</h2>
 
 @if (company != null)
 {
@@ -18,7 +17,7 @@
     <button type="submit">Upload</button>
 </form>
 
-<h3>Files in this app's storage</h3>
+<h3>Files</h3>
 <ul>
     @foreach (var name in (List<string>)ViewBag.Files)
     {

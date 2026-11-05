@@ -4,8 +4,7 @@
     var session = ViewBag.Session as SessionResult;
 }
 
-<h2>Uploads (legacy storage)</h2>
-<p>Files posted here are saved under this app's own <code>App_Data\Uploads</code> folder. The modern app never sees them.</p>
+<h2>Uploads</h2>
 
 @if (session != null)
 {
@@ -19,7 +18,7 @@
     <button type="submit">Upload</button>
 }
 
-<h3>Files in this app's storage</h3>
+<h3>Files</h3>
 <ul>
     @foreach (var name in (System.Collections.Generic.List<string>)ViewBag.Files)
     {

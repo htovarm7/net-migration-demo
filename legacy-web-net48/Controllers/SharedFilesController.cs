@@ -5,9 +5,6 @@ using LegacyWeb.Services;
 
 namespace LegacyWeb.Controllers
 {
-    // The opposite of Uploads: this page talks to Auth Manager's global /uploads
-    // endpoint, so whatever is submitted here (or from the modern app's own
-    // SharedFiles page) shows up in both - on purpose.
     public class SharedFilesController : Controller
     {
         public ActionResult Index()

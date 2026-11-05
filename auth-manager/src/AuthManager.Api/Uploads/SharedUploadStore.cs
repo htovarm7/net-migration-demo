@@ -7,12 +7,6 @@ public record SharedUploadRecord(
     DateTime UploadedAtUtc,
     long SizeBytes);
 
-/// <summary>
-/// A genuinely global endpoint: neither legacy nor modern owns this data. Both apps call
-/// the exact same contract (POST/GET /uploads) and see the exact same files, regardless
-/// of which one the request came from. Metadata is encoded in the stored file name so no
-/// separate index needs to be kept in sync.
-/// </summary>
 public class SharedUploadStore(IWebHostEnvironment env)
 {
     private const string Separator = "__";

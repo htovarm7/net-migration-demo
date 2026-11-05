@@ -5,10 +5,6 @@ namespace ModernWeb.Services;
 
 public record SharedUploadRecord(string FileName, string UploadedBy, string SourceApp, DateTime UploadedAtUtc, long SizeBytes);
 
-/// <summary>
-/// Calls Auth Manager's global /uploads endpoint - the same contract the legacy app's
-/// AuthManagerClient.UploadShared/ListShared use. Neither app owns this data.
-/// </summary>
 public class SharedFilesClient(HttpClient http)
 {
     private static readonly JsonSerializerOptions JsonOptions = new() { PropertyNameCaseInsensitive = true };

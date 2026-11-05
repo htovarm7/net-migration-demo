@@ -3,9 +3,6 @@ using ModernWeb.Services;
 
 namespace ModernWeb.Controllers;
 
-// Not a migrated page: this feature lives entirely in the modern app, so there is no
-// routing filter involved. Files saved here only ever touch this app's own folder -
-// the legacy app can't see or write into it.
 public class UploadsController(IWebHostEnvironment env) : Controller
 {
     private string UploadsPath => Path.Combine(env.ContentRootPath, "UploadedFiles");
